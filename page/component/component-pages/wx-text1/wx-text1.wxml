@@ -1,0 +1,20 @@
+<!-- page/component/component-pages/wx-text/wx-text1.wxml -->
+<view class="page">
+    <view class="page__hd">
+        <text class="page__title">成语学习</text>
+        <text class="page__desc">成语详细解析</text>
+    </view>
+    <view class="page__bd">
+        <view class="section section_gap">
+            <text class="idiom-name">{{content}}</text>
+            <text class="idiom-info">{{text}}</text>
+        </view>
+        <view class="btn-container">
+            <view class="btn-group">
+                <button class="btn next-btn" bindtap="nextIdiom">下一个</button>
+                <button class="btn random-btn" bindtap="randomIdiom">随机下一个</button>
+            </view>
+            <text class="progress-text">当前：{{currentIndex + 1}}/{{idiomsDataLength}}</text>
+        </view>
+    </view>
+</view>

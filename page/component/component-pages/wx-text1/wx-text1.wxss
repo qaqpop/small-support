@@ -1,0 +1,55 @@
+/* page/component/component-pages/wx-text/wx-text1.wxss */
+.page {
+  padding: 20rpx;
+}
+
+.idiom-name {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #1aad19;
+  display: block;
+  margin-bottom: 30rpx;
+  text-align: center;
+}
+
+.idiom-info {
+  font-size: 28rpx;
+  line-height: 1.6;
+  display: block;
+  margin-bottom: 40rpx;
+}
+
+.btn-container {
+  text-align: center;
+  margin-top: 40rpx;
+}
+
+.btn-group {
+  display: flex;
+  justify-content: center;
+  gap: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.btn {
+  border-radius: 10rpx;
+  padding: 20rpx 40rpx;
+  font-size: 28rpx;
+  color: white;
+  border: none;
+}
+
+.next-btn {
+  background-color: #1aad19;
+}
+
+.random-btn {
+  background-color: #10aeff;
+}
+
+.progress-text {
+  font-size: 24rpx;
+  color: #888;
+  display: block;
+  text-align: center;
+}
