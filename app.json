@@ -82,13 +82,15 @@
       "pagePath": "page/component/index",
       "iconPath": "image/wechat.png",
       "selectedIconPath": "image/wechatHL.png",
-      "text": "组件"
-    }, {
+      "text": "one"
+    }
+    , {
       "pagePath": "page/API/index/index",
       "iconPath": "image/wechat.png",
       "selectedIconPath": "image/wechatHL.png",
-      "text": "接口"
-    }]
+      "text": "two"
+    }
+  ]
   },
   "networkTimeout": {
     "request": 10000,
