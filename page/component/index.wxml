@@ -187,5 +187,16 @@
             </view>
         </view>
 
+        <view class="widgets__item">
+            <view id="rest" class="widgets__info {{restShow ? 'widgets__info_show' : ''}}" bindtap="widgetsToggle">
+                <text class="widgets__info-name">rest</text>
+                <image class="widgets__info-img" src="resources/kind/content.png" background-size="cover" />
+            </view>
+            <view class="widgets__list {{restShow ? 'widgets__list_show' : ''}}">
+                <view>
+                    <button class="widget__name" bindtap="goToWuziqiWithParams">wuziqi</button>
+                </view>
+            </view>
+        </view>
     </view>
 </view>

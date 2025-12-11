@@ -1,5 +1,37 @@
-var pageData = {}, 
-    type = ['view', 'content', 'form', 'interact', 'nav', 'media', 'map', 'canvas', 'text'];
+var pageData = {
+    
+    // 跳转到分包页面
+    goToWuziqi: function() {
+        wx.navigateTo({
+        url: '/wechat-wuziqi/pages/index'
+        })
+    },
+    
+    // 带参数跳转
+    goToWuziqiWithParams: function() {
+        wx.navigateTo({
+        url: '/wechat-wuziqi/pages/index?gameType=normal&player=user1'
+        })
+    },
+  
+    // 必须实现 onShareAppMessage 方法
+    onShareAppMessage() {
+    return {
+        title: '邀请好友一起玩五子棋',
+        path: '/pages/index/index?inviter=' + (getApp().globalData.userInfo?.nickName || ''),
+        imageUrl: '/images/share.jpg'
+    }
+    },
+
+    // 分享到朋友圈（可选）
+    onShareTimeline() {
+    return {
+        title: '快来挑战我的五子棋！',
+        imageUrl: '/images/timeline-share.jpg'
+    }
+}
+}, 
+    type = ['view', 'content', 'form', 'interact', 'nav', 'media', 'map', 'canvas', 'text', "rest"];
 
 // 初始化数据
 pageData.data = {
@@ -13,6 +45,7 @@ pageData.data = {
     mapShow: false,
     canvasShow: false,
     textShow: false,
+    restShow: false,
 };
 
 // 新增：切换整个内容区域的显示/隐藏

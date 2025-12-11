@@ -1,0 +1,108 @@
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+}
+
+.status-bar {
+  margin-bottom: 40rpx;
+  padding: 20rpx 40rpx;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50rpx;
+  backdrop-filter: blur(10px);
+}
+
+.status-text {
+  font-size: 36rpx;
+  color: white;
+  font-weight: bold;
+}
+
+.chessboard {
+  position: relative;
+  background: #b4b2ae;
+  border: 4rpx solid #333;
+  box-shadow: 0 20rpx 40rpx rgba(0, 0, 0, 0.3);
+}
+
+.board-row {
+  display: flex;
+}
+
+.board-cell {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.board-cell::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2rpx;
+  background: #333;
+  transform: translateY(-50%);
+}
+
+.board-cell::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2rpx;
+  background: #333;
+  transform: translateX(-50%);
+}
+
+.chess-piece {
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.3);
+}
+
+.chess-piece.black {
+  background: radial-gradient(circle at 30% 30%, #666, #000);
+  border: 2rpx solid #222;
+}
+
+.chess-piece.white {
+  background: radial-gradient(circle at 30% 30%, #fff, #ddd);
+  border: 2rpx solid #999;
+}
+
+.control-panel {
+  display: flex;
+  gap: 30rpx;
+  margin-top: 40rpx;
+}
+
+.control-btn {
+  padding: 20rpx 40rpx;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2rpx solid rgba(255, 255, 255, 0.5);
+  border-radius: 50rpx;
+  color: white;
+  font-size: 32rpx;
+  font-weight: bold;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.control-btn:active {
+  transform: scale(0.95);
+}
+
+.invite-btn {
+  background: rgba(255, 215, 0, 0.3);
+  border-color: rgba(255, 215, 0, 0.5);
+}

@@ -67,6 +67,12 @@
       "page/API/open-location/open-location"
 
   ],
+  "subpackages": [
+    {
+      "root": "wechat-wuziqi",
+      "pages": ["pages/index"]
+    }
+  ],
   "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "学习",
@@ -98,5 +104,7 @@
     "uploadFile": 10000,
     "downloadFile": 10000
   },
+  "enableShareAppMessage": true,
+  "enableShareTimeline": true,
   "debug": true
 }

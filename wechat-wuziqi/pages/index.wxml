@@ -1,0 +1,33 @@
+
+<view class="container">
+  <!-- 游戏状态显示 -->
+  <view class="status-bar">
+    <text class="status-text">{{gameStatus}}</text>
+  </view>
+  
+  <!-- page.wxml -->
+  <view class="container">
+    <button bindtap="onInviteFriend" class="invite-btn">邀请好友</button>
+    <button open-type="share" class="share-btn">分享给好友</button>
+    
+    <!-- 海报生成区域 -->
+    <canvas canvas-id="posterCanvas" style="width: 300px; height: 400px;"></canvas>
+  </view>
+
+  <!-- 棋盘 -->
+  <view class="chessboard" style="width: {{boardSize}}px; height: {{boardSize}}px;">
+    <view wx:for="{{board}}" wx:for-item="row" wx:for-index="i" class="board-row" key="{{i}}">
+      <view wx:for="{{row}}" wx:for-item="cell" wx:for-index="j" class="board-cell" 
+            style="width: {{cellSize}}px; height: {{cellSize}}px;" 
+            bindtap="handleTap" data-row="{{i}}" data-col="{{j}}" key="{{j}}">
+        <view class="chess-piece {{cell === 1 ? 'black' : cell === 2 ? 'white' : ''}}"></view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 操作按钮 -->
+  <view class="control-panel">
+    <button class="control-btn" bindtap="resetGame">重新开始</button>
+    <button class="control-btn invite-btn" bindtap="inviteFriend">邀请好友</button>
+  </view>
+</view>
