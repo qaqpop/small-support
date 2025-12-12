@@ -1,0 +1,288 @@
+/* component-pages/wx-text2/wx-text2.wxss */
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 20rpx;
+  box-sizing: border-box;
+}
+
+/* 搜索区域 */
+.search-section {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+  background: #f5f5f5;
+  border-radius: 10rpx;
+  padding: 15rpx 20rpx;
+  flex-shrink: 0; /* 防止搜索区域被压缩 */
+}
+
+.search-input {
+  flex: 1;
+  height: 60rpx;
+  font-size: 28rpx;
+}
+
+.clear-btn {
+  color: #007AFF;
+  font-size: 26rpx;
+  margin-left: 20rpx;
+}
+
+/* 分类筛选 */
+.category-section {
+  white-space: nowrap;
+  margin-bottom: 20rpx;
+  flex-shrink: 0; /* 防止分类区域被压缩 */
+  overflow-x: auto;
+  padding-bottom: 10rpx;
+}
+
+.category-item {
+  display: inline-block;
+  padding: 12rpx 24rpx;
+  margin-right: 20rpx;
+  background: #f0f0f0;
+  border-radius: 30rpx;
+  font-size: 26rpx;
+  color: #666;
+  white-space: nowrap;
+}
+
+.category-item.active {
+  background: #007AFF;
+  color: white;
+}
+
+/* 主要内容区域 - 关键修改 */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* 重要：允许内容区域收缩 */
+}
+
+/* 默认句子显示区域 - 占满剩余空间 */
+.content-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 0; /* 允许内容区域收缩 */
+  position: relative;
+}
+
+/* 句子卡片 - 占满更多空间 */
+.sentence-card {
+  background: white;
+  border-radius: 20rpx;
+  padding: 60rpx 40rpx; /* 增加内边距 */
+  margin: 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: calc(100% - 40rpx); /* 占满宽度 */
+  max-width: none; /* 移除最大宽度限制 */
+  min-height: 300rpx; /* 增加最小高度 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1; /* 卡片也占满空间 */
+  max-height: 70vh; /* 限制最大高度避免过大 */
+}
+
+.sentence-content {
+  font-size: 40rpx; /* 增大字体 */
+  line-height: 1.8; /* 增加行高 */
+  color: #333;
+  margin-bottom: 30rpx;
+  font-weight: 500;
+  word-break: break-word; /* 长文本换行 */
+}
+
+.sentence-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 25rpx;
+  flex-wrap: wrap;
+  gap: 15rpx;
+}
+
+.sentence-category {
+  background: #007AFF;
+  color: white;
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+}
+
+.sentence-author {
+  font-size: 28rpx;
+  color: #666;
+  font-style: italic;
+}
+
+.sentence-tags {
+  margin-top: 20rpx;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10rpx;
+}
+
+.tag {
+  background: #f0f0f0;
+  color: #666;
+  padding: 6rpx 15rpx;
+  border-radius: 15rpx;
+  font-size: 22rpx;
+}
+
+/* 计数器 */
+.counter {
+  margin: 20rpx 0;
+  font-size: 26rpx;
+  color: #999;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* 操作按钮 */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 30rpx;
+  margin: 30rpx 0;
+  width: 100%;
+  flex-shrink: 0; /* 防止按钮区域被压缩 */
+  flex-wrap: wrap;
+}
+
+.btn {
+  background: #007AFF;
+  color: white;
+  border: none;
+  border-radius: 10rpx;
+  padding: 25rpx 40rpx;
+  font-size: 28rpx;
+  min-width: 140rpx;
+}
+
+.btn:active {
+  background: #0056CC;
+}
+
+/* 搜索结果列表 - 占满中间区域 */
+.list-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+  margin: 20rpx 0;
+  min-height: 0;
+}
+
+.list-title {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 20rpx;
+  display: block;
+  flex-shrink: 0;
+}
+
+.sentence-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.list-item {
+  padding: 25rpx 20rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+  transition: background-color 0.3s;
+}
+
+.list-item:active {
+  background-color: #f5f5f5;
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+.item-content {
+  font-size: 30rpx;
+  color: #333;
+  line-height: 1.5;
+  margin-bottom: 10rpx;
+}
+
+.item-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.item-category {
+  font-size: 24rpx;
+  color: #007AFF;
+  background: #f0f8ff;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+}
+
+.item-author {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 空状态 */
+.empty-state {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #999;
+  font-size: 32rpx;
+  text-align: center;
+  padding: 60rpx;
+}
+
+/* 响应式调整 */
+@media (max-height: 800rpx) {
+  .sentence-card {
+    padding: 40rpx 30rpx;
+    min-height: 250rpx;
+  }
+  
+  .sentence-content {
+    font-size: 34rpx;
+    line-height: 1.6;
+  }
+}
+
+@media (max-height: 600rpx) {
+  .sentence-card {
+    padding: 30rpx 20rpx;
+    min-height: 200rpx;
+  }
+  
+  .sentence-content {
+    font-size: 30rpx;
+    line-height: 1.5;
+  }
+  
+  .action-buttons {
+    margin: 20rpx 0;
+  }
+  
+  .btn {
+    padding: 20rpx 30rpx;
+    font-size: 26rpx;
+  }
+}

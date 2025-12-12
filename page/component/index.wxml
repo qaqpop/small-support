@@ -184,6 +184,11 @@
                     <image class="widget__arrow" src="resources/arrow.png" background-size="cover" />
                     <view class="widget__line"></view>
                 </navigator>
+                <navigator url="component-pages/wx-text2/wx-text2" class="widget">
+                    <text class="widget__name">好句好词</text>
+                    <image class="widget__arrow" src="resources/arrow.png" background-size="cover" />
+                    <view class="widget__line"></view>
+                </navigator>
             </view>
         </view>
 

@@ -1,0 +1,67 @@
+<!-- component-pages/wx-text2/wx-text2.wxml -->
+<view class="container">
+  <!-- 搜索区域 -->
+  <view class="search-section">
+    <input class="search-input" placeholder="搜索句子..." value="{{searchText}}" bindinput="onSearchInput" />
+    <text class="clear-btn" bindtap="clearSearch">清除</text>
+  </view>
+
+  <!-- 分类筛选 -->
+  <scroll-view class="category-section" scroll-x="true">
+    <text class="category-item {{selectedCategory === 'all' ? 'active' : ''}}" 
+          bindtap="onCategoryChange" data-category="all">全部</text>
+    <text class="category-item {{selectedCategory === category ? 'active' : ''}}" 
+          wx:for="{{categories}}" wx:key="*this"
+          bindtap="onCategoryChange" data-category="{{category}}">{{category}}</text>
+  </scroll-view>
+
+  <!-- 主要内容区域 -->
+  <view class="main-content">
+    <!-- 默认显示区域 - 确保这个区域显示 -->
+    <view class="content-section" wx:if="{{!isSearching}}">
+      <!-- 句子卡片 -->
+      <view class="sentence-card" wx:if="{{filteredSentences.length > 0}}">
+        <text class="sentence-content">{{currentSentence.content}}</text>
+        <view class="sentence-info">
+          <text class="sentence-category">{{currentSentence.category}}</text>
+          <text class="sentence-author">—— {{currentSentence.author}}</text>
+        </view>
+        <view class="sentence-tags">
+          <text class="tag" wx:for="{{currentSentence.tags}}" wx:key="*this">{{item}}</text>
+        </view>
+      </view>
+      
+      <!-- 空状态 -->
+      <view class="empty-state" wx:if="{{filteredSentences.length === 0}}">
+        <text>暂无数据</text>
+      </view>
+      
+      <!-- 计数器 -->
+      <text class="counter" wx:if="{{filteredSentences.length > 0}}">
+        {{currentIndex + 1}} / {{filteredSentences.length}}
+      </text>
+      
+      <!-- 操作按钮 -->
+      <view class="action-buttons" wx:if="{{filteredSentences.length > 0}}">
+        <button class="btn" bindtap="showPrevious">上一个</button>
+        <button class="btn" bindtap="showRandom">随机</button>
+        <button class="btn" bindtap="showNext">下一个</button>
+      </view>
+    </view>
+
+    <!-- 搜索结果列表 -->
+    <view class="list-section" wx:if="{{isSearching && filteredSentences.length > 0}}">
+      <text class="list-title">搜索结果 ({{filteredSentences.length}} 条)</text>
+      <scroll-view class="sentence-list" scroll-y="true">
+        <view class="list-item" wx:for="{{filteredSentences}}" wx:key="index"
+              bindtap="selectSentence" data-index="{{index}}">
+          <text class="item-content">{{item.content}}</text>
+          <view class="item-info">
+            <text class="item-category">{{item.category}}</text>
+            <text class="item-author">{{item.author}}</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</view>
