@@ -2,66 +2,77 @@
 <view class="container">
   <!-- 搜索区域 -->
   <view class="search-section">
-    <input class="search-input" placeholder="搜索句子..." value="{{searchText}}" bindinput="onSearchInput" />
+    <input class="search-input" placeholder="搜索句子内容" value="{{searchText}}" bindinput="onSearchInput" />
     <text class="clear-btn" bindtap="clearSearch">清除</text>
   </view>
 
   <!-- 分类筛选 -->
-  <scroll-view class="category-section" scroll-x="true">
+  <scroll-view class="category-section" scroll-x>
     <text class="category-item {{selectedCategory === 'all' ? 'active' : ''}}" 
-          bindtap="onCategoryChange" data-category="all">全部</text>
-    <text class="category-item {{selectedCategory === category ? 'active' : ''}}" 
-          wx:for="{{categories}}" wx:key="*this"
-          bindtap="onCategoryChange" data-category="{{category}}">{{category}}</text>
+          data-category="all" bindtap="onCategoryChange">全部</text>
+    <text wx:for="{{categories}}" wx:key="*this" 
+          class="category-item {{selectedCategory === item ? 'active' : ''}}"
+          data-category="{{item}}" bindtap="onCategoryChange">{{item}}</text>
   </scroll-view>
 
-  <!-- 主要内容区域 -->
-  <view class="main-content">
-    <!-- 默认显示区域 - 确保这个区域显示 -->
-    <view class="content-section" wx:if="{{!isSearching}}">
-      <!-- 句子卡片 -->
-      <view class="sentence-card" wx:if="{{filteredSentences.length > 0}}">
-        <text class="sentence-content">{{currentSentence.content}}</text>
+  <!-- 中间内容区域 -->
+  <view class="middle-content">
+    <view class="sentence-display" wx:if="{{currentSentence}}">
+      <view class="sentence-card">
+        <!-- 显示句子内容，搜索时高亮搜索词 -->
+        <view class="sentence-content">
+          <text wx:for="{{textSegments}}" wx:key="index" 
+                class="{{item.type === 'highlight' ? 'highlight-text' : 'normal-text'}}">
+            {{item.text}}
+          </text>
+        </view>
         <view class="sentence-info">
           <text class="sentence-category">{{currentSentence.category}}</text>
-          <text class="sentence-author">—— {{currentSentence.author}}</text>
-        </view>
-        <view class="sentence-tags">
-          <text class="tag" wx:for="{{currentSentence.tags}}" wx:key="*this">{{item}}</text>
         </view>
       </view>
       
-      <!-- 空状态 -->
-      <view class="empty-state" wx:if="{{filteredSentences.length === 0}}">
-        <text>暂无数据</text>
+      <!-- 只有在没有搜索词时才显示排比分析 -->
+      <view class="analysis-result" wx:if="{{!searchText && repeatedWords.length > 0}}">
+        <text class="analysis-title">排比结构分析：</text>
+        <view class="repeated-words">
+          <text wx:for="{{repeatedWords}}" wx:key="word" class="word-item">
+            "*{{item.word}}*" 出现 {{item.count}} 次
+          </text>
+        </view>
       </view>
       
-      <!-- 计数器 -->
-      <text class="counter" wx:if="{{filteredSentences.length > 0}}">
-        {{currentIndex + 1}} / {{filteredSentences.length}}
-      </text>
-      
-      <!-- 操作按钮 -->
-      <view class="action-buttons" wx:if="{{filteredSentences.length > 0}}">
-        <button class="btn" bindtap="showPrevious">上一个</button>
-        <button class="btn" bindtap="showRandom">随机</button>
-        <button class="btn" bindtap="showNext">下一个</button>
-      </view>
+      <text class="counter">{{currentIndex + 1}} / {{filteredSentences.length}}</text>
+    </view>
+    
+    <view class="empty-state" wx:else>
+      暂无相关句子
     </view>
 
     <!-- 搜索结果列表 -->
-    <view class="list-section" wx:if="{{isSearching && filteredSentences.length > 0}}">
-      <text class="list-title">搜索结果 ({{filteredSentences.length}} 条)</text>
-      <scroll-view class="sentence-list" scroll-y="true">
-        <view class="list-item" wx:for="{{filteredSentences}}" wx:key="index"
-              bindtap="selectSentence" data-index="{{index}}">
-          <text class="item-content">{{item.content}}</text>
-          <view class="item-info">
-            <text class="item-category">{{item.category}}</text>
-            <text class="item-author">{{item.author}}</text>
+    <view class="search-results" wx:if="{{isSearching && filteredSentences.length > 0}}">
+      <text class="results-title">搜索结果 ({{filteredSentences.length}})</text>
+      <scroll-view class="results-list" scroll-y>
+        <view wx:for="{{filteredSentences}}" wx:key="index" class="result-item" 
+              data-index="{{index}}" bindtap="selectSentence">
+          <view class="result-content">
+            <!-- 搜索结果中也高亮显示搜索词 -->
+            <text wx:for="{{item.textSegments || []}}" wx:key="index" 
+                  class="{{item.type === 'highlight' ? 'highlight-text' : 'normal-text'}}">
+              {{item.text}}
+            </text>
+          </view>
+          <view class="result-info">
+            <text class="result-category">{{item.category}}</text>
           </view>
         </view>
       </scroll-view>
     </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-buttons">
+    <button class="btn prev-btn" bindtap="showPrevious">上一个</button>
+    <button class="btn random-btn" bindtap="showRandom">随机</button>
+    <button class="btn next-btn" bindtap="showNext">下一个</button>
   </view>
 </view>

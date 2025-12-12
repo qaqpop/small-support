@@ -10,122 +10,229 @@ Page({
     filteredSentences: [],
     isSearching: false,
     selectedCategory: 'all',
-    currentSentence: {}  // 直接存储当前句子对象
+    currentSentence: null,
+    textSegments: [],
+    repeatedWords: []
   },
 
   onLoad: function() {
-    console.log('页面加载，开始初始化数据...');
-    
-    // 确保数据正确加载
     const sentences = sentencesData.sentences || [];
     const categories = sentencesData.categories || [];
     
     this.setData({
       allSentences: sentences,
       categories: categories,
-      filteredSentences: sentences
+      filteredSentences: sentences,
+      currentSentence: sentences.length > 0 ? sentences[0] : null
     }, () => {
-      console.log('数据加载完成，句子数量:', sentences.length);
-      this.updateCurrentSentence();
+      this.showCurrentSentence();
     });
   },
 
-  // 更新当前显示的句子
-  updateCurrentSentence: function() {
-    const { filteredSentences, currentIndex } = this.data;
+  showCurrentSentence: function() {
+    const { filteredSentences, currentIndex, searchText } = this.data;
     
     if (filteredSentences.length === 0) {
-      this.setData({
-        currentSentence: { 
-          content: '暂无句子数据', 
-          author: '', 
-          category: '', 
-          tags: [] 
-        }
+      this.setData({ 
+        currentSentence: null,
+        textSegments: [],
+        repeatedWords: []
       });
       return;
     }
     
-    const sentence = filteredSentences[currentIndex] || filteredSentences[0];
-    this.setData({
-      currentSentence: sentence,
-      currentIndex: currentIndex >= filteredSentences.length ? 0 : currentIndex
-    });
+    const sentence = filteredSentences[currentIndex];
     
-    console.log('更新当前句子:', sentence.content);
+    // 如果有搜索词，优先显示搜索高亮
+    if (searchText && searchText.trim()) {
+      const searchResult = this.highlightSearchText(sentence.content, searchText);
+      this.setData({ 
+        currentSentence: sentence,
+        textSegments: searchResult.textSegments,
+        repeatedWords: []
+      });
+    } else {
+      // 没有搜索词时显示排比分析
+      const analysisResult = this.analyzeRepetition(sentence.content);
+      this.setData({ 
+        currentSentence: sentence,
+        textSegments: analysisResult.textSegments,
+        repeatedWords: analysisResult.repeatedWords
+      });
+    }
   },
 
-  // 显示下一个句子
+  // 搜索文本高亮
+  highlightSearchText: function(content, searchText) {
+    const textSegments = [];
+    
+    if (!searchText || !searchText.trim()) {
+      textSegments.push({ type: 'normal', text: content });
+      return { textSegments };
+    }
+    
+    const searchRegex = new RegExp(searchText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+    let lastIndex = 0;
+    let match;
+    
+    while ((match = searchRegex.exec(content)) !== null) {
+      // 添加匹配前的普通文本
+      if (match.index > lastIndex) {
+        textSegments.push({
+          type: 'normal',
+          text: content.substring(lastIndex, match.index)
+        });
+      }
+      
+      // 添加高亮文本
+      textSegments.push({
+        type: 'highlight',
+        text: match[0]
+      });
+      
+      lastIndex = match.index + match[0].length;
+    }
+    
+    // 添加剩余的普通文本
+    if (lastIndex < content.length) {
+      textSegments.push({
+        type: 'normal',
+        text: content.substring(lastIndex)
+      });
+    }
+    
+    return { textSegments };
+  },
+
+  analyzeRepetition: function(content) {
+    const chineseWords = content.match(/[\u4e00-\u9fa5]{2,}/g) || [];
+    
+    const wordCount = {};
+    chineseWords.forEach(word => {
+      wordCount[word] = (wordCount[word] || 0) + 1;
+    });
+    
+    const repeatedWords = [];
+    for (const [word, count] of Object.entries(wordCount)) {
+      if (count >= 2) {
+        repeatedWords.push({ word, count });
+      }
+    }
+    
+    repeatedWords.sort((a, b) => b.count - a.count);
+    
+    const textSegments = [];
+    let remainingContent = content;
+    
+    if (repeatedWords.length === 0) {
+      textSegments.push({
+        type: 'normal',
+        text: content
+      });
+    } else {
+      const processedWords = new Set();
+      
+      repeatedWords.forEach(item => {
+        if (processedWords.has(item.word)) return;
+        processedWords.add(item.word);
+        
+        const regex = new RegExp(item.word, 'g');
+        remainingContent = remainingContent.replace(regex, `*${item.word}*`);
+      });
+      
+      const parts = remainingContent.split(/(\*.*?\*)/g);
+      
+      parts.forEach(part => {
+        if (part.startsWith('*') && part.endsWith('*')) {
+          textSegments.push({
+            type: 'highlight',
+            text: part.slice(1, -1)
+          });
+        } else if (part.length > 0) {
+          textSegments.push({
+            type: 'normal',
+            text: part
+          });
+        }
+      });
+    }
+    
+    return {
+      textSegments: textSegments,
+      repeatedWords: repeatedWords
+    };
+  },
+
+  // 为搜索结果列表中的每个句子生成高亮文本
+  generateSearchResults: function(sentences, searchText) {
+    return sentences.map(sentence => {
+      const highlighted = this.highlightSearchText(sentence.content, searchText);
+      return {
+        ...sentence,
+        textSegments: highlighted.textSegments
+      };
+    });
+  },
+
   showNext: function() {
-    const { filteredSentences, currentIndex } = this.data;
-    if (filteredSentences.length === 0) return;
+    let { currentIndex, filteredSentences } = this.data;
+    currentIndex = (currentIndex + 1) % filteredSentences.length;
     
-    let nextIndex = (currentIndex + 1) % filteredSentences.length;
-    this.setData({
-      currentIndex: nextIndex,
-      isSearching: false
+    this.setData({ 
+      currentIndex: currentIndex,
+      isSearching: false 
     }, () => {
-      this.updateCurrentSentence();
+      this.showCurrentSentence();
     });
   },
 
-  // 显示上一个句子
   showPrevious: function() {
-    const { filteredSentences, currentIndex } = this.data;
-    if (filteredSentences.length === 0) return;
+    let { currentIndex, filteredSentences } = this.data;
+    currentIndex = (currentIndex - 1 + filteredSentences.length) % filteredSentences.length;
     
-    let prevIndex = (currentIndex - 1 + filteredSentences.length) % filteredSentences.length;
-    this.setData({
-      currentIndex: prevIndex,
-      isSearching: false
+    this.setData({ 
+      currentIndex: currentIndex,
+      isSearching: false 
     }, () => {
-      this.updateCurrentSentence();
+      this.showCurrentSentence();
     });
   },
 
-  // 显示随机句子
   showRandom: function() {
     const { filteredSentences } = this.data;
-    if (filteredSentences.length === 0) return;
+    const randomIndex = Math.floor(Math.random() * filteredSentences.length);
     
-    let randomIndex = Math.floor(Math.random() * filteredSentences.length);
-    this.setData({
+    this.setData({ 
       currentIndex: randomIndex,
-      isSearching: false
+      isSearching: false 
     }, () => {
-      this.updateCurrentSentence();
+      this.showCurrentSentence();
     });
   },
 
-  // 选择列表中的句子
   selectSentence: function(e) {
     const index = e.currentTarget.dataset.index;
     this.setData({
       currentIndex: index,
       isSearching: false
     }, () => {
-      this.updateCurrentSentence();
+      this.showCurrentSentence();
     });
   },
 
-  // 搜索输入
   onSearchInput: function(e) {
-    const searchText = e.detail.value;
-    this.setData({ searchText: searchText });
+    this.setData({ searchText: e.detail.value });
     this.filterSentences();
   },
 
-  // 分类切换
   onCategoryChange: function(e) {
-    const category = e.currentTarget.dataset.category;
-    this.setData({
-      selectedCategory: category,
+    this.setData({ 
+      selectedCategory: e.currentTarget.dataset.category,
       currentIndex: 0
     });
     this.filterSentences();
   },
 
-  // 清除搜索
   clearSearch: function() {
     this.setData({
       searchText: '',
@@ -136,32 +243,25 @@ Page({
     this.filterSentences();
   },
 
-  // 过滤句子
   filterSentences: function() {
     const { allSentences, searchText, selectedCategory } = this.data;
     
-    let filtered = allSentences.filter(sentence => {
-      // 分类筛选
+    const filtered = allSentences.filter(sentence => {
       const categoryMatch = selectedCategory === 'all' || sentence.category === selectedCategory;
-      
-      // 搜索文本筛选
-      let textMatch = true;
-      if (searchText && searchText.trim()) {
-        textMatch = 
-          (sentence.content && sentence.content.includes(searchText)) ||
-          (sentence.author && sentence.author.includes(searchText)) ||
-          (sentence.tags && sentence.tags.some(tag => tag.includes(searchText)));
-      }
+      const textMatch = !searchText || sentence.content.includes(searchText);
       
       return categoryMatch && textMatch;
     });
     
+    // 为搜索结果生成高亮文本
+    const highlightedResults = searchText ? this.generateSearchResults(filtered, searchText) : filtered;
+    
     this.setData({
-      filteredSentences: filtered,
+      filteredSentences: highlightedResults,
       currentIndex: 0,
-      isSearching: !!searchText && searchText.trim().length > 0
+      isSearching: !!searchText
     }, () => {
-      this.updateCurrentSentence();
+      this.showCurrentSentence();
     });
   }
 });
