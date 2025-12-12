@@ -3,6 +3,8 @@
   padding: 30rpx;
   min-height: 100vh;
   background-color: #f5f5f5;
+  display: flex;
+  flex-direction: column;
 }
 
 /* 搜索区域 */
@@ -53,6 +55,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  margin-bottom: 30rpx; /* 增加底部间距，避免按钮太靠下 */
 }
 
 .sentence-display {
@@ -136,6 +139,7 @@
   background: white;
   border-radius: 15rpx;
   padding: 30rpx;
+  margin-bottom: 20rpx;
 }
 
 .results-title {
@@ -147,7 +151,7 @@
 }
 
 .results-list {
-  max-height: 400rpx;
+  max-height: 300rpx; /* 减小高度，为底部按钮留出空间 */
 }
 
 .result-item {
@@ -189,11 +193,16 @@
   padding: 100rpx 0;
 }
 
-/* 操作按钮 */
+/* 操作按钮 - 往上移动 */
 .action-buttons {
   display: flex;
   justify-content: space-between;
-  margin-top: 30rpx;
+  margin-top: 0; /* 移除顶部间距 */
+  padding: 20rpx 0; /* 增加内边距 */
+  position: sticky;
+  bottom: 30rpx;
+  background: #f5f5f5;
+  border-radius: 10rpx;
 }
 
 .btn {
