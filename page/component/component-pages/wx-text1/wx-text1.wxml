@@ -36,57 +36,7 @@
             />
           </view>
           
-          <view class="form-item">
-            <text class="label">拼音*</text>
-            <input 
-              data-field="pinyin" 
-              value="{{newIdiom.pinyin}}" 
-              bindinput="onInputChange" 
-              placeholder="请输入拼音"
-            />
-          </view>
           
-          <view class="form-item">
-            <text class="label">释义*</text>
-            <textarea 
-              data-field="meaning" 
-              value="{{newIdiom.meaning}}" 
-              bindinput="onInputChange" 
-              placeholder="请输入释义"
-              maxlength="200"
-            />
-          </view>
-          
-          <view class="form-item">
-            <text class="label">近义词</text>
-            <input 
-              data-field="synonyms" 
-              value="{{newIdiom.synonyms}}" 
-              bindinput="onInputChange" 
-              placeholder="用逗号、顿号或空格分隔"
-            />
-          </view>
-          
-          <view class="form-item">
-            <text class="label">反义词</text>
-            <input 
-              data-field="antonyms" 
-              value="{{newIdiom.antonyms}}" 
-              bindinput="onInputChange" 
-              placeholder="用逗号、顿号或空格分隔"
-            />
-          </view>
-          
-          <view class="form-item">
-            <text class="label">对比说明</text>
-            <textarea 
-              data-field="comparison" 
-              value="{{newIdiom.comparison}}" 
-              bindinput="onInputChange" 
-              placeholder="请输入对比说明"
-              maxlength="100"
-            />
-          </view>
           
           <view class="form-item">
             <text class="label">示例句子</text>

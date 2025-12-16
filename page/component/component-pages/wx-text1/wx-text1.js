@@ -101,12 +101,41 @@ Page({
   formatIdiomInfo: function(idiom) {
     const highlightedExample = this.highlightIdiomInExample(idiom.example, idiom.name);
     
-    return `${idiom.name}（拼音：${idiom.pinyin}）\n\n` +
-           `释义：${idiom.meaning}\n\n` +
-           `近义词：${idiom.synonyms.join('、')}\n\n` +
-           `反义词：${idiom.antonyms.join('、')}\n\n` +
-           `对比：${idiom.comparison}\n\n` +
-           `实例：${highlightedExample}`;
+    let info = `${idiom.name}`;
+    
+    // 只有有拼音时才显示
+    if (idiom.pinyin) {
+      info += `（拼音：${idiom.pinyin}）`;
+    }
+    
+    info += '\n\n';
+    
+    // 只有有释义时才显示
+    if (idiom.meaning) {
+      info += `释义：${idiom.meaning}\n\n`;
+    }
+    
+    // 只有有近义词时才显示
+    if (idiom.synonyms && idiom.synonyms.length > 0) {
+      info += `近义词：${idiom.synonyms.join('、')}\n\n`;
+    }
+    
+    // 只有有反义词时才显示
+    if (idiom.antonyms && idiom.antonyms.length > 0) {
+      info += `反义词：${idiom.antonyms.join('、')}\n\n`;
+    }
+    
+    // 只有有对比说明时才显示
+    if (idiom.comparison) {
+      info += `对比：${idiom.comparison}\n\n`;
+    }
+    
+    // 只有有示例时才显示
+    if (highlightedExample) {
+      info += `实例：${highlightedExample}`;
+    }
+    
+    return info;
   },
 
   highlightIdiomInExample: function(example, idiomName) {
@@ -183,26 +212,10 @@ Page({
   uploadIdiom: function() {
     const newIdiom = this.data.newIdiom;
     
-    // 验证必填字段
+    // 验证必填字段 - 只保留成语名称必填
     if (!newIdiom.name.trim()) {
       wx.showToast({
         title: '请输入成语名称',
-        icon: 'none'
-      });
-      return;
-    }
-
-    if (!newIdiom.pinyin.trim()) {
-      wx.showToast({
-        title: '请输入拼音',
-        icon: 'none'
-      });
-      return;
-    }
-
-    if (!newIdiom.meaning.trim()) {
-      wx.showToast({
-        title: '请输入释义',
         icon: 'none'
       });
       return;
@@ -225,11 +238,11 @@ Page({
     const synonyms = newIdiom.synonyms ? newIdiom.synonyms.split(/[,，、\s]+/).filter(s => s.trim()) : [];
     const antonyms = newIdiom.antonyms ? newIdiom.antonyms.split(/[,，、\s]+/).filter(s => s.trim()) : [];
 
-    // 创建新的成语对象
+    // 创建新的成语对象 - 允许空值
     const idiomToAdd = {
       name: newIdiom.name.trim(),
-      pinyin: newIdiom.pinyin.trim(),
-      meaning: newIdiom.meaning.trim(),
+      pinyin: newIdiom.pinyin ? newIdiom.pinyin.trim() : '',
+      meaning: newIdiom.meaning ? newIdiom.meaning.trim() : '',
       synonyms: synonyms,
       antonyms: antonyms,
       comparison: newIdiom.comparison ? newIdiom.comparison.trim() : '',
