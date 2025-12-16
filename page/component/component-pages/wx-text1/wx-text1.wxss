@@ -53,3 +53,155 @@
   display: block;
   text-align: center;
 }
+
+/* 上传模态框样式 */
+.upload-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.upload-content {
+  background: white;
+  width: 90%;
+  max-width: 600rpx;
+  border-radius: 10rpx;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.upload-header {
+  padding: 30rpx;
+  border-bottom: 1rpx solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+.close-btn {
+  font-size: 40rpx;
+  color: #999;
+}
+
+.upload-form {
+  flex: 1;
+  padding: 30rpx;
+  max-height: 60vh;
+}
+
+.form-item {
+  margin-bottom: 30rpx;
+}
+
+.label {
+  display: block;
+  margin-bottom: 10rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.form-item input,
+.form-item textarea {
+  width: 100%;
+  border: 1rpx solid #ddd;
+  border-radius: 5rpx;
+  padding: 20rpx;
+  box-sizing: border-box;
+}
+
+.form-item textarea {
+  min-height: 120rpx;
+}
+
+.upload-actions {
+  padding: 30rpx;
+  border-top: 1rpx solid #eee;
+  display: flex;
+  gap: 20rpx;
+}
+
+.btn-cancel, .btn-submit {
+  flex: 1;
+  padding: 20rpx;
+  border: none;
+  border-radius: 5rpx;
+}
+
+.btn-cancel {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.btn-submit {
+  background: #07c160;
+  color: white;
+}
+
+/* 上传按钮样式 */
+.upload-btn-container {
+  position: fixed;
+  bottom: 40rpx;
+  right: 40rpx;
+}
+
+.upload-btn {
+  background: #07c160;
+  color: white;
+  border-radius: 50rpx;
+  padding: 20rpx 40rpx;
+  font-size: 28rpx;
+}
+
+/* 操作按钮容器 */
+.action-buttons {
+  position: fixed;
+  bottom: 40rpx;
+  right: 40rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* 右侧对齐 */
+  gap: 20rpx;
+}
+
+.upload-btn, .clear-btn {
+  border-radius: 50rpx;
+  padding: 20rpx 40rpx;
+  font-size: 28rpx;
+  border: none;
+  min-width: 160rpx; /* 设置最小宽度保持一致性 */
+  text-align: center;
+}
+
+.upload-btn {
+  background: #07c160;
+  color: white;
+}
+
+.clear-btn {
+  background: #ff6b6b;
+  color: white;
+}
+
+/* 如果需要完全居中于右侧，可以使用以下替代方案 */
+/*
+.action-buttons {
+  position: fixed;
+  top: 50%;
+  right: 40rpx;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20rpx;
+}
+*/

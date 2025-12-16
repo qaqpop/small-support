@@ -17,4 +17,99 @@
             <text class="progress-text">当前：{{currentIndex + 1}}/{{idiomsDataLength}}</text>
         </view>
     </view>
+    <!-- 上传模态框 -->
+    <view wx:if="{{showUploadModal}}" class="upload-modal">
+      <view class="upload-content">
+        <view class="upload-header">
+          <text>上传新成语</text>
+          <text class="close-btn" bindtap="hideUpload">×</text>
+        </view>
+        
+        <scroll-view class="upload-form" scroll-y>
+          <view class="form-item">
+            <text class="label">成语名称*</text>
+            <input 
+              data-field="name" 
+              value="{{newIdiom.name}}" 
+              bindinput="onInputChange" 
+              placeholder="请输入成语名称"
+            />
+          </view>
+          
+          <view class="form-item">
+            <text class="label">拼音*</text>
+            <input 
+              data-field="pinyin" 
+              value="{{newIdiom.pinyin}}" 
+              bindinput="onInputChange" 
+              placeholder="请输入拼音"
+            />
+          </view>
+          
+          <view class="form-item">
+            <text class="label">释义*</text>
+            <textarea 
+              data-field="meaning" 
+              value="{{newIdiom.meaning}}" 
+              bindinput="onInputChange" 
+              placeholder="请输入释义"
+              maxlength="200"
+            />
+          </view>
+          
+          <view class="form-item">
+            <text class="label">近义词</text>
+            <input 
+              data-field="synonyms" 
+              value="{{newIdiom.synonyms}}" 
+              bindinput="onInputChange" 
+              placeholder="用逗号、顿号或空格分隔"
+            />
+          </view>
+          
+          <view class="form-item">
+            <text class="label">反义词</text>
+            <input 
+              data-field="antonyms" 
+              value="{{newIdiom.antonyms}}" 
+              bindinput="onInputChange" 
+              placeholder="用逗号、顿号或空格分隔"
+            />
+          </view>
+          
+          <view class="form-item">
+            <text class="label">对比说明</text>
+            <textarea 
+              data-field="comparison" 
+              value="{{newIdiom.comparison}}" 
+              bindinput="onInputChange" 
+              placeholder="请输入对比说明"
+              maxlength="100"
+            />
+          </view>
+          
+          <view class="form-item">
+            <text class="label">示例句子</text>
+            <textarea 
+              data-field="example" 
+              value="{{newIdiom.example}}" 
+              bindinput="onInputChange" 
+              placeholder="请输入使用示例"
+              maxlength="300"
+            />
+          </view>
+        </scroll-view>
+        
+        <view class="upload-actions">
+          <button class="btn-cancel" bindtap="hideUpload">取消</button>
+          <button class="btn-submit" bindtap="uploadIdiom">上传</button>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 添加上传按钮和清空按钮 -->
+    <view class="action-buttons">
+    <button class="upload-btn" bindtap="showUpload">上传成语</button>
+    <button class="clear-btn" bindtap="clearCustomData">恢复默认</button>
+    </view>
 </view>
