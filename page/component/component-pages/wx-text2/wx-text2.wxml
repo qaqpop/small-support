@@ -1,4 +1,23 @@
 <view class="container">
+  <!-- 工具栏 -->
+  <view class="toolbar">
+    <view class="search-box" bindtap="showSearchPanel">
+      <text class="search-icon">🔍</text>
+      <text class="search-text">{{searchKeyword || '搜索句子...'}}</text>
+    </view>
+    <view class="toolbar-buttons">
+      <view class="upload-btn" bindtap="showUploadPanel">
+        <text class="upload-icon">➕</text>
+        <text class="upload-text">上传</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 搜索信息显示 -->
+  <text wx:if="{{isSearching}}" class="search-info">
+    搜索"{{searchKeyword}}"，找到 {{filteredSentences.length}} 条结果
+  </text>
+
   <view class="header">
     <text class="title">句子展示</text>
     <text class="subtitle">第 {{currentIndex + 1}} 条 / 共 {{totalCount}} 条</text>
@@ -26,12 +45,59 @@
       <view class="sentence-content">{{currentSentence.content}}</view>
       <view class="sentence-meta">
         <text class="category-badge">{{currentSentence.category}}</text>
-        <text class="sentence-index">#{{currentIndex + 1}}</text>
+        <view class="action-buttons">
+          <text class="favorite-btn {{currentSentence.isFavorite ? 'favorited' : ''}}" 
+                 bindtap="toggleFavorite">❤️</text>
+          <text class="speak-btn" bindtap="speakSentence">🔊</text>
+        </view>
       </view>
+      <text wx:if="{{currentSentence.source === 'user'}}" class="sentence-source">用户上传</text>
     </view>
     
     <view wx:else class="empty-state">
       <text>暂无数据</text>
+    </view>
+  </view>
+
+  <!-- 搜索面板 -->
+  <view wx:if="{{showSearchPanel}}" class="mask" bindtap="hideSearchPanel"></view>
+  <view wx:if="{{showSearchPanel}}" class="search-panel">
+    <view class="search-input-container">
+      <input class="search-input" placeholder="输入关键词搜索句子..." 
+             value="{{searchKeyword}}" bindinput="onSearchInput" focus="{{true}}"/>
+      <view class="search-actions">
+        <view class="search-clear" bindtap="clearSearch">清除</view>
+        <view class="search-close" bindtap="hideSearchPanel">关闭</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 上传面板 -->
+  <view wx:if="{{showUploadPanel}}" class="mask" bindtap="hideUploadPanel"></view>
+  <view wx:if="{{showUploadPanel}}" class="upload-panel">
+    <view class="panel-header">
+      <text class="panel-title">上传新句子</text>
+      <text class="panel-close" bindtap="hideUploadPanel">×</text>
+    </view>
+    <view class="upload-form">
+      <view class="form-group">
+        <text class="form-label">句子内容</text>
+        <textarea class="form-textarea" placeholder="请输入句子内容..." 
+                  value="{{newSentence.content}}" bindinput="onSentenceInput" maxlength="200"/>
+        <text class="char-count">{{newSentence.content ? newSentence.content.length : 0}}/200</text>
+      </view>
+      <view class="form-group">
+        <text class="form-label">分类</text>
+        <input class="form-input" placeholder="请输入分类，如：励志、爱情等" 
+               value="{{newSentence.category}}" bindinput="onCategoryInput"/>
+      </view>
+      <view class="upload-actions">
+        <view class="btn-secondary" bindtap="hideUploadPanel">取消</view>
+        <view class="btn-primary {{!newSentence.content || !newSentence.category ? 'disabled' : ''}}" 
+              bindtap="uploadSentence" disabled="{{!newSentence.content || !newSentence.category}}">
+          上传
+        </view>
+      </view>
     </view>
   </view>
 </view>
