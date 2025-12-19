@@ -1,78 +1,37 @@
-<!-- component-pages/wx-text2/wx-text2.wxml -->
 <view class="container">
-  <!-- 搜索区域 -->
-  <view class="search-section">
-    <input class="search-input" placeholder="搜索句子内容" value="{{searchText}}" bindinput="onSearchInput" />
-    <text class="clear-btn" bindtap="clearSearch">清除</text>
+  <view class="header">
+    <text class="title">句子展示</text>
+    <text class="subtitle">第 {{currentIndex + 1}} 条 / 共 {{totalCount}} 条</text>
   </view>
-
-  <!-- 分类筛选 -->
-  <scroll-view class="category-section" scroll-x>
-    <text class="category-item {{selectedCategory === 'all' ? 'active' : ''}}" 
-          data-category="all" bindtap="onCategoryChange">全部</text>
-    <text wx:for="{{categories}}" wx:key="*this" 
-          class="category-item {{selectedCategory === item ? 'active' : ''}}"
-          data-category="{{item}}" bindtap="onCategoryChange">{{item}}</text>
-  </scroll-view>
-
-  <!-- 中间内容区域 -->
-  <view class="middle-content">
-    <view class="sentence-display" wx:if="{{currentSentence}}">
-      <view class="sentence-card">
-        <!-- 显示句子内容，搜索时高亮搜索词 -->
-        <view class="sentence-content">
-          <text wx:for="{{textSegments}}" wx:key="index" 
-                class="{{item.type === 'highlight' ? 'highlight-text' : 'normal-text'}}">
-            {{item.text}}
-          </text>
-        </view>
-        <view class="sentence-info">
-          <text class="sentence-category">{{currentSentence.category}}</text>
-        </view>
-      </view>
-      
-      <!-- 只有在没有搜索词时才显示排比分析 -->
-      <view class="analysis-result" wx:if="{{!searchText && repeatedWords.length > 0}}">
-        <text class="analysis-title">排比结构分析：</text>
-        <view class="repeated-words">
-          <text wx:for="{{repeatedWords}}" wx:key="word" class="word-item">
-            "*{{item.word}}*" 出现 {{item.count}} 次
-          </text>
-        </view>
-      </view>
-      
-      <text class="counter">{{currentIndex + 1}} / {{filteredSentences.length}}</text>
+  
+  <view class="navigation">
+    <view class="nav-btn prev-btn" bindtap="prevSentence">
+      <text class="btn-icon">←</text>
+      <text class="btn-text">上一条</text>
     </view>
     
-    <view class="empty-state" wx:else>
-      暂无相关句子
+    <view class="nav-btn random-btn" bindtap="randomSentence">
+      <text class="btn-icon">🎲</text>
+      <text class="btn-text">随机</text>
     </view>
-
-    <!-- 搜索结果列表 -->
-    <view class="search-results" wx:if="{{isSearching && filteredSentences.length > 0}}">
-      <text class="results-title">搜索结果 ({{filteredSentences.length}})</text>
-      <scroll-view class="results-list" scroll-y>
-        <view wx:for="{{filteredSentences}}" wx:key="index" class="result-item" 
-              data-index="{{index}}" bindtap="selectSentence">
-          <view class="result-content">
-            <!-- 搜索结果中也高亮显示搜索词 -->
-            <text wx:for="{{item.textSegments || []}}" wx:key="index" 
-                  class="{{item.type === 'highlight' ? 'highlight-text' : 'normal-text'}}">
-              {{item.text}}
-            </text>
-          </view>
-          <view class="result-info">
-            <text class="result-category">{{item.category}}</text>
-          </view>
-        </view>
-      </scroll-view>
+    
+    <view class="nav-btn next-btn" bindtap="nextSentence">
+      <text class="btn-text">下一条</text>
+      <text class="btn-icon">→</text>
     </view>
   </view>
-
-  <!-- 操作按钮 -->
-  <view class="action-buttons">
-    <button class="btn prev-btn" bindtap="showPrevious">上一个</button>
-    <button class="btn random-btn" bindtap="showRandom">随机</button>
-    <button class="btn next-btn" bindtap="showNext">下一个</button>
+  
+  <view class="content-section">
+    <view wx:if="{{currentSentence}}" class="sentence-card">
+      <view class="sentence-content">{{currentSentence.content}}</view>
+      <view class="sentence-meta">
+        <text class="category-badge">{{currentSentence.category}}</text>
+        <text class="sentence-index">#{{currentIndex + 1}}</text>
+      </view>
+    </view>
+    
+    <view wx:else class="empty-state">
+      <text>暂无数据</text>
+    </view>
   </view>
 </view>

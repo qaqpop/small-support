@@ -54,7 +54,7 @@
   text-align: center;
 }
 
-/* 上传模态框样式 */
+/* 上传模态框样式 - 优化输入框 */
 .upload-modal {
   position: fixed;
   top: 0;
@@ -71,11 +71,12 @@
 .upload-content {
   background: white;
   width: 90%;
-  max-width: 600rpx;
-  border-radius: 10rpx;
-  max-height: 80vh;
+  max-width: 700rpx; /* 增大宽度 */
+  border-radius: 15rpx;
+  max-height: 85vh; /* 增加高度 */
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .upload-header {
@@ -86,6 +87,7 @@
   align-items: center;
   font-size: 32rpx;
   font-weight: bold;
+  flex-shrink: 0; /* 防止压缩 */
 }
 
 .close-btn {
@@ -96,31 +98,56 @@
 .upload-form {
   flex: 1;
   padding: 30rpx;
-  max-height: 60vh;
+  max-height: calc(85vh - 200rpx); /* 动态计算高度 */
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .form-item {
-  margin-bottom: 30rpx;
+  margin-bottom: 35rpx;
+  flex-shrink: 0; /* 防止表单项目被压缩 */
 }
 
 .label {
   display: block;
-  margin-bottom: 10rpx;
-  font-size: 28rpx;
+  margin-bottom: 15rpx;
+  font-size: 30rpx;
   color: #333;
+  font-weight: 500;
 }
 
 .form-item input,
 .form-item textarea {
   width: 100%;
-  border: 1rpx solid #ddd;
-  border-radius: 5rpx;
-  padding: 20rpx;
+  border: 2rpx solid #e0e0e0;
+  border-radius: 8rpx;
+  padding: 25rpx;
   box-sizing: border-box;
+  font-size: 30rpx;
+  line-height: 1.5;
+  min-height: 80rpx; /* 设置最小高度 */
+  background: #fafafa;
+  transition: border-color 0.3s;
+}
+
+.form-item input:focus,
+.form-item textarea:focus {
+  border-color: #07c160;
+  background: white;
+  outline: none;
 }
 
 .form-item textarea {
-  min-height: 120rpx;
+  min-height: 150rpx;
+  resize: vertical; /* 允许垂直调整大小 */
+  line-height: 1.6;
+}
+
+/* 必填字段样式 */
+.label.required::after {
+  content: " *";
+  color: #ff4757;
 }
 
 .upload-actions {
@@ -128,23 +155,35 @@
   border-top: 1rpx solid #eee;
   display: flex;
   gap: 20rpx;
+  flex-shrink: 0; /* 防止按钮区域被压缩 */
 }
 
 .btn-cancel, .btn-submit {
   flex: 1;
-  padding: 20rpx;
+  padding: 25rpx;
   border: none;
-  border-radius: 5rpx;
+  border-radius: 8rpx;
+  font-size: 30rpx;
+  font-weight: 500;
 }
 
 .btn-cancel {
-  background: #f0f0f0;
-  color: #333;
+  background: #f8f9fa;
+  color: #666;
+  border: 1rpx solid #ddd;
 }
 
 .btn-submit {
   background: #07c160;
   color: white;
+}
+
+.btn-submit:active {
+  background: #06a652;
+}
+
+.btn-cancel:active {
+  background: #e9ecef;
 }
 
 /* 上传按钮样式 */
@@ -169,7 +208,7 @@
   right: 40rpx;
   display: flex;
   flex-direction: column;
-  align-items: flex-end; /* 右侧对齐 */
+  align-items: flex-end;
   gap: 20rpx;
 }
 
@@ -178,7 +217,7 @@
   padding: 20rpx 40rpx;
   font-size: 28rpx;
   border: none;
-  min-width: 160rpx; /* 设置最小宽度保持一致性 */
+  min-width: 160rpx;
   text-align: center;
 }
 
@@ -192,16 +231,34 @@
   color: white;
 }
 
-/* 如果需要完全居中于右侧，可以使用以下替代方案 */
-/*
-.action-buttons {
-  position: fixed;
-  top: 50%;
-  right: 40rpx;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20rpx;
+/* 滚动条样式 */
+.upload-form::-webkit-scrollbar {
+  width: 6rpx;
 }
-*/
+
+.upload-form::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3rpx;
+}
+
+.upload-form::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* 响应式调整 */
+@media (max-width: 750rpx) {
+  .upload-content {
+    width: 95%;
+    max-width: 650rpx;
+  }
+  
+  .upload-form {
+    padding: 25rpx;
+  }
+  
+  .form-item input,
+  .form-item textarea {
+    padding: 20rpx;
+    font-size: 28rpx;
+  }
+}
